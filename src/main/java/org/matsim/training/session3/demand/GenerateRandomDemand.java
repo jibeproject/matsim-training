@@ -29,8 +29,8 @@ public class GenerateRandomDemand {
 	private static final Logger logger = Logger.getLogger(GenerateRandomDemand.class);
 
 	// Specify all input files
-	private static final String MSOAs = "input/MSOA/Middle_Layer_Super_Output_Areas_December_2011_Boundaries_BFC.shp"; // Polygon shapefile for demand generation
-	private static final String CAR_MATRIX = "input/car_matrix.csv"; // OD Matrix for cars
+	private static final String MSOAs = "input/zones/Middle_Layer_Super_Output_Areas_December_2011_Boundaries_BFC.shp"; // Polygon shapefile for demand generation
+	private static final String CAR_MATRIX = "input/car_matrix_greater_manchester.csv"; // OD Matrix for cars
 	private static final String PLANS_FILE_OUTPUT = "input/plans.xml"; // The output file of demand generation
 	private Integer commutersRead = 0;
 	private Integer totalCommuters = 0;
