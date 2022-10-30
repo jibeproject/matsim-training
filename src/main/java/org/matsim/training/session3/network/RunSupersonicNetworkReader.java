@@ -5,10 +5,9 @@ import org.matsim.api.core.v01.network.NetworkWriter;
 import org.matsim.contrib.osm.networkReader.SupersonicOsmNetworkReader;
 import org.matsim.core.network.NetworkUtils;
 import org.matsim.core.utils.geometry.CoordinateTransformation;
-import org.matsim.core.utils.geometry.transformations.IdentityTransformation;
 import org.matsim.core.utils.geometry.transformations.TransformationFactory;
 
-public class SupersonicNetworkReaderRunner {
+public class RunSupersonicNetworkReader {
 
     private static final String inputFile = "input/network/greater-manchester-latest.osm.pbf";
     private static final String outputFile = "input/network/greater-manchester.xml";

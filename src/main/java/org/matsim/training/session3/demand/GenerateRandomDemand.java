@@ -32,11 +32,13 @@ public class GenerateRandomDemand {
 	private static final String MSOAs = "input/MSOA/Middle_Layer_Super_Output_Areas_December_2011_Boundaries_BFC.shp"; // Polygon shapefile for demand generation
 	private static final String CAR_MATRIX = "input/car_matrix.csv"; // OD Matrix for cars
 	private static final String PLANS_FILE_OUTPUT = "input/plans.xml"; // The output file of demand generation
+	private Integer commutersRead = 0;
+	private Integer totalCommuters = 0;
 
 	// Define objects and parameters
 	private final Scenario scenario;
 	private Map<String, Geometry> shapeMap;
-	private static final double SCALE_FACTOR = 0.05;
+	private static final double SCALE_FACTOR = 0.01;
 
 	// Entering point of the class "Generate Random Demand"
 	public static void main(String[] args) {
@@ -81,6 +83,7 @@ public class GenerateRandomDemand {
 					for (int i = 1 ; i < lineArray.length ; i++) {
 						int count = Integer.parseInt(lineArray[i]);
 						if(count > 0) {
+							commutersRead += count;
 							name = originZone + "-" + destinationZones[i];
 							createOD(count,originZone,destinationZones[i],name);
 						}
@@ -93,6 +96,9 @@ public class GenerateRandomDemand {
 		// Write the population file to specified folder
 		PopulationWriter pw = new PopulationWriter(scenario.getPopulation(), scenario.getNetwork());
 		pw.write(PLANS_FILE_OUTPUT);
+
+		logger.info("Total commuter plans read: " + commutersRead);
+		logger.info("Total commuter plans written: " + totalCommuters);
 	}
 
 	// Read in shapefile
@@ -130,25 +136,26 @@ public class GenerateRandomDemand {
 	// Create od relations for each MSOA pair
 	private void createOD(int pop, String origin, String destination, String toFromPrefix) {
 
-		// Specify the number of commuters and the modal split of this relation
-		double commuters = pop * SCALE_FACTOR;
 		// Specify the ID of these two MSOAs
 		Geometry home = this.shapeMap.get(origin);
 		Geometry work = this.shapeMap.get(destination);
 		// Randomly creating the home and work location of each commuter
-		for (int i = 0; i <= commuters; i++) {
-			// Specify the home location randomly
-			Coord homeCoord = drawRandomPointFromGeometry(home);
-			// Specify the working location randomly
-			Coord workCoord = drawRandomPointFromGeometry(work);
-			// Create plan for each commuter
-			createOnePerson(i, homeCoord, workCoord, "car", toFromPrefix);
+		for (int i = 0; i < pop; i++) {
+			if(Math.random() <= SCALE_FACTOR) {
+				// Specify the home location randomly
+				Coord homeCoord = drawRandomPointFromGeometry(home);
+				// Specify the working location randomly
+				Coord workCoord = drawRandomPointFromGeometry(work);
+				// Create plan for each commuter
+				createOnePerson(i, homeCoord, workCoord, toFromPrefix);
+			}
 		}
 	}
 
 	// Create plan for each commuter
-	private void createOnePerson(int i, Coord coord, Coord coordWork, String mode, String toFromPrefix) {
+	private void createOnePerson(int i, Coord coord, Coord coordWork, String toFromPrefix) {
 
+		totalCommuters++;
 		double variance = Math.random() * 60;
 
 		Id<Person> personId = Id.createPersonId(toFromPrefix + i);
@@ -160,14 +167,14 @@ public class GenerateRandomDemand {
 		home.setEndTime(7 * 60 * 60 + variance * 120);
 		plan.addActivity(home);
 
-		Leg hinweg = scenario.getPopulation().getFactory().createLeg(mode);
+		Leg hinweg = scenario.getPopulation().getFactory().createLeg("car");
 		plan.addLeg(hinweg);
 
 		Activity work = scenario.getPopulation().getFactory().createActivityFromCoord("work", coordWork);
 		work.setEndTime(16 * 60 * 60 + variance * 120);
 		plan.addActivity(work);
 
-		Leg rueckweg = scenario.getPopulation().getFactory().createLeg(mode);
+		Leg rueckweg = scenario.getPopulation().getFactory().createLeg("car");
 		plan.addLeg(rueckweg);
 
 		Activity home2 = scenario.getPopulation().getFactory().createActivityFromCoord("home", coord);
