@@ -1,0 +1,7 @@
+Case;VehCat;Year;TrafficScenario;Component;RoadCat;TrafficSit;Gradient;V_weighted;EFA_weighted;AmbientCondPattern;EFA_WTT_weighted;EFA_WTW_weighted
+2020HotAverage[4.1];pass. car;2020;REF D HB41;PM;Urban;URB/Local/50/Freeflow;0%;41.66275787;0.002823106;ØGermany;;
+2020HotAverage[4.1];pass. car;2020;REF D HB41;PM;Urban;URB/Local/50/St+Go;0%;12.48863316;0.005200097;ØGermany;;
+2020HotAverage[4.1];pass. car;2020;REF D HB41;NO2;Urban;URB/Local/50/Freeflow;0%;41.66275787;0.093356177;ØGermany;;
+2020HotAverage[4.1];pass. car;2020;REF D HB41;NO2;Urban;URB/Local/50/St+Go;0%;12.48863316;0.17424117;ØGermany;;
+2020HotAverage[4.1];pass. car;2020;REF D HB41;PM2.5;Urban;URB/Local/50/Freeflow;0%;41.66275787;0.002823106;ØGermany;;
+2020HotAverage[4.1];pass. car;2020;REF D HB41;PM2.5;Urban;URB/Local/50/St+Go;0%;12.48863316;0.005200097;ØGermany;;
